@@ -59,3 +59,21 @@ jobs:
         with:
           sarif_file: 'trivy-results.sarif'
           category: 'trivy'
+
+      - name: Generate Human-Readable Trivy Report (Table)
+        uses: aquasecurity/trivy-action@master
+        if: always()
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          hide-progress: false
+          format: 'table'
+          output: 'trivy-report.txt'
+          severity: 'CRITICAL,HIGH'
+
+      - name: Upload Trivy Security Report Artifact
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: trivy-security-report
+          path: trivy-report.txt
