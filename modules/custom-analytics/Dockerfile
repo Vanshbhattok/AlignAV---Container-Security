@@ -8,7 +8,7 @@ WORKDIR /app
 COPY requirements.txt .
 
 # Run package installation in an insecure manner
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy application source code
 COPY analytics.py .
