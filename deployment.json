@@ -1,0 +1,53 @@
+{
+  "modulesContent": {
+    "$edgeAgent": {
+      "properties.desired.systemModules": {
+        "edgeAgent": {
+          "type": "docker",
+          "settings": {
+            "image": "mcr.microsoft.com/azureiotedge-agent:1.4"
+          }
+        },
+        "edgeHub": {
+          "type": "docker",
+          "status": "running",
+          "settings": {
+            "image": "mcr.microsoft.com/azureiotedge-hub:1.4"
+          }
+        }
+      },
+      "properties.desired.modules": {
+        "tempSensorModule": {
+          "type": "docker",
+          "status": "running",
+          "settings": {
+            "image": "alignavacr.azurecr.io/temp-sensor-module:v1.0.0-signed",
+            "createOptions": {
+              "HostConfig": {
+                "Privileged": false,
+                "ReadonlyRootfs": true,
+                "CapDrop": [ "ALL" ],
+                "CapAdd": [ "NET_BIND_SERVICE" ],
+                "User": "1000:1000"
+              }
+            }
+          }
+        },
+        "customAnalyticsModule": {
+          "type": "docker",
+          "status": "running",
+          "settings": {
+            "image": "alignavacr.azurecr.io/custom-analytics:latest",
+            "createOptions": {
+              "HostConfig": {
+                "Privileged": true,
+                "ReadonlyRootfs": false,
+                "User": "root"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

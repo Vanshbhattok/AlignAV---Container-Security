@@ -1,0 +1,51 @@
+name: Container & API DAST Scan
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  dast-analysis:
+    name: Dynamic Web App & API DAST
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Build Dashboard Container Image
+        run: |
+          docker build -t mock-iot-hub:latest .
+
+      - name: Run Dashboard Container
+        run: |
+          # Run the container in the background and map port 8080
+          docker run -d -p 8080:8080 --name active-hub mock-iot-hub:latest
+          
+          # Poll the web server until it is fully active and returns HTTP 200
+          echo "Waiting for containerized dashboard to start on port 8080..."
+          for i in {1..15}; do
+            if curl -s -o /dev/null -w "%{http_code}" http://localhost:8080 | grep -q "200"; then
+              echo "Container dashboard successfully online!"
+              break
+            fi
+            sleep 1
+          done
+
+      - name: Run OWASP ZAP Baseline DAST Scan
+        uses: zaproxy/action-baseline@v0.12.0
+        with:
+          target: 'http://localhost:8080/'
+          fail_action: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Stop & Clean Up Container
+        if: always()
+        run: |
+          docker stop active-hub
+          docker rm active-hub
