@@ -37,12 +37,12 @@
           "type": "docker",
           "status": "running",
           "settings": {
-            "image": "alignavacr.azurecr.io/custom-analytics:latest",
+            "image": "alignavacr.azurecr.io/custom-analytics:v1.0.0-signed",
             "createOptions": {
               "HostConfig": {
-                "Privileged": true,
-                "ReadonlyRootfs": false,
-                "User": "root"
+                "Privileged": false,
+                "ReadonlyRootfs": true,
+                "User": "1000:1000"
               }
             }
           }
