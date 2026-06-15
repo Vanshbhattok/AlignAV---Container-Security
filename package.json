@@ -1,0 +1,8 @@
+{
+  "name": "alignav-vulnerability-demo",
+  "version": "1.0.0",
+  "description": "Vulnerability testing package to demonstrate Trivy scan output",
+  "dependencies": {
+    "lodash": "4.17.4"
+  }
+}
