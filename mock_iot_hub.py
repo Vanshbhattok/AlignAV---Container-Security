@@ -9,7 +9,7 @@ from socketserver import ThreadingMixIn
 import threading
 
 PORT = 8080
-HOST = "localhost"
+HOST = "0.0.0.0"
 
 # Global state tracking
 lock = threading.Lock()
