@@ -27,7 +27,6 @@ def post_to_hub(endpoint, payload):
         return None
 
 def start_telemetry():
-    global running
     print("[Edge Device] Telemetry thread started. Ingesting downstream sensor data...")
     temp = 24.5
     while running:
