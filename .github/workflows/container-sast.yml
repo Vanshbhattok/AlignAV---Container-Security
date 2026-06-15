@@ -43,6 +43,9 @@ jobs:
           recursive: true
           ignore: DL3008,DL3013
 
+      - name: Generate Package Lockfile for Trivy
+        run: npm install --package-lock-only
+
       - name: Run Trivy Security Scan (Vulnerabilities & Secrets)
         uses: aquasecurity/trivy-action@master
         with:
